@@ -1,34 +1,31 @@
-const express = require('express');
-const consola = require("consola");
-const { Pool } = require('pg');
-
 require('dotenv').config();
-
-const pool = new Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
-  ssl: { rejectUnauthorized: false }
-})
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-      consola.error('DATABASE: Connection failed');
-      console.log(err);
-  }
-  if (res) {
-      consola.success('DATABASE: Connection success');
-    //   console.log(res);
-  }
-  pool.end() 
-})
-
+require('rootpath')();
+const express = require('express');
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const errorHandler = require('_middleware/error-handler');
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    consola.success('SERVER: Listening to port', port, '...');
-});
+global.__basedir = __dirname;
+
+app.use(cors());
+
+app.use( bodyParser.json({limit: '50mb'}) );
+app.use(bodyParser.urlencoded({
+  limit: '50mb',
+  extended: true,
+  parameterLimit:50000
+}));
+
+
+// api routes
+app.use('/users', require('./users/users.controller'));
+
+
+// global error handler
+app.use(errorHandler);
+
+// start server
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3000;
+app.listen(port, () => console.log('Server listening on port ' + port));
+
