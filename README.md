@@ -8,6 +8,17 @@
 </ul>
 
 <h1> Endpoints </h1>
+
+Las peticiones que tengan el ícono: 🔐 necesitan que en los headers se les mande en los header:
+
+
+```
+{
+    "Authorization" : "Bearer {token devuelto en login/register}"
+}
+
+```
+
 <br>
 <h2> ✅  Usuarios</h2>
 <br>
@@ -75,7 +86,7 @@ Devolución:
 
 
 
-<h3>😜 Edit: PUT -> /users/{id_user}</h3>
+<h3>🔐  Edit: PUT -> /users/{id_user}</h3>
 
 
 ```
@@ -114,7 +125,7 @@ Devolución:
 
 
 
-<h3>😜 Show: GET -> /users/1</h3>
+<h3>🔐 Show: GET -> /users/1</h3>
 
 
 ```
@@ -139,7 +150,7 @@ Devolución:
 
 
 
-<h3>😜 Calificar: POST -> /users/1</h3>
+<h3>🔐 Calificar: POST -> /users/1</h3>
 
 
 ```
