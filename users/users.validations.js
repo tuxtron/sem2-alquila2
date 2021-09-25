@@ -37,7 +37,7 @@ function registerSchema(req, res, next) {
         password            : Joi.string().min(6).required(),
         fecha_nacimiento    : Joi.date().required(),
         telefono            : Joi.string().required(),
-        
+        is_empresa          : Joi.boolean().required(),
 
     });
     validateRequest(req, next, schema);
