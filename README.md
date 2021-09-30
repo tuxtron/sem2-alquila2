@@ -3,6 +3,7 @@
 <ul>
     <li>cp .env_example .env</li>
     <li>Configurar en .env las variables de la BD</li>
+    <li>sequelize db:migrate</li>
     <li>npm install</li>
     <li>npm start ó npm test (para que corra como demonio y no haya que actualizar cada vez que hay un cambio)</li>
 </ul>
