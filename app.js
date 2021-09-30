@@ -17,9 +17,9 @@ app.use(bodyParser.urlencoded({
   parameterLimit:50000
 }));
 
-
 // api routes
 app.use('/users', require('./users/users.controller'));
+app.use('/publicacion', require('./publicaciones/publicaciones.controller'));
 
 
 // global error handler
