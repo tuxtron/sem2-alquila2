@@ -15,9 +15,6 @@ module.exports = {
 async function getAllPublicaciones(req) {
     var params = {}
 
-    if(req.query.nombre != null)
-        params.nombre = {[Op.like]: '%'+req.query.nombre+'%'}
-
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
 
@@ -38,13 +35,14 @@ async function createPublicacion(params) {
             console.error(e);
         }
     });
-    return publicacion;
+    return publicacion.publicacion;
 }
 
 async function updatePublicacion(id, params) {
     const publicacion = await getPublicacion(id);
     Object.assign(publicacion, params);
     await publicacion.save();
+    return publicacion;
 }
 
 async function getPublicacion(id) {
@@ -55,6 +53,6 @@ async function getPublicacion(id) {
             console.error(e);
         }
     });
-    if (!publicacion) throw 'User no encontrado';
+    if (!publicacion) throw 'Publicación no encontrado';
     return publicacion;
 }

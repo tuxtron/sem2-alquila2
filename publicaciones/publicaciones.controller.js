@@ -7,32 +7,32 @@ const validations = require('./publicaciones.validations');
 //routes
 router.get('/', authorize(), getAllPublicaciones);
 router.get('/:id', authorize(), getPublicacionById);
-router.post('/:id', authorize(), validations.createPublicacionSchema, createPublicacion);
+router.post('/store', authorize(), validations.createPublicacionSchema, createPublicacion);
 router.put('/:id', authorize(), validations.updatePublicacionSchema, updatePublicaciones);
 // router.delete('/:id', authorize(), removePublicaciones);
 
 module.exports = router;
 
 function getAllPublicaciones(req, res, next) {
-    publicacionService.getAllPublicaciones(req.body)
+    publicacionService.getAllPublicaciones(req)
         .then(publicacion => res.json(publicacion))
         .catch(next);
 }
 
 function getPublicacionById(req, res, next) {
-    publicacionService.getPublicacionById(req.params.id)
+    publicacionService.getPublicacion(req.params.id)
     .then(publicacion => res.json(publicacion))
     .catch(next);
 }
 
 function createPublicacion(req, res, next) {
     publicacionService.createPublicacion(req.body)
-        .then(publicacion => res.json(publucacion))
+        .then(publicacion => res.json(publicacion))
         .catch(next);
 }
 
 function updatePublicaciones(req, res, next) {
-    publicacionService.update(req.params.id, req.body)
+    publicacionService.updatePublicacion(req.params.id, req.body)
     .then(publicacion => res.json(publicacion))
     .catch(next);
 }

@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({
 
 // api routes
 app.use('/users', require('./users/users.controller'));
-app.use('/publicacion', require('./publicaciones/publicaciones.controller'));
+app.use('/publicaciones', require('./publicaciones/publicaciones.controller'));
 
 
 // global error handler

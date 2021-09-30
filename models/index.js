@@ -4,27 +4,20 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
+
+const env = process.env.NODE_ENV || "development";
+const config = require("../config/config.js")[env];
 const db = {};
 
-require('dotenv').config();
 
-
-let database    = process.env.PG_DATABASE
-let user        = process.env.PG_USER
-let password    = process.env.PG_PASSWORD
-let host        = process.env.PG_HOST
-let port        = process.env.PG_PORT
-
-const sequelize = new Sequelize(database, user, password, {
+const sequelize = new Sequelize(config.database, config.username, config.password, {
 		logging: false,
-		host: host,
-		port: port,
-		dialect: 'postgres',
-        dialectOptions: {
-            ssl: {
-              rejectUnauthorized: false
-            }
-        }
+		host: config.host,
+		port: config.port,
+		dialect: config.dialect,
+        ssl: {
+			rejectUnauthorized: false
+		}
 });
 
 
