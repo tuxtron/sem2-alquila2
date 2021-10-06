@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-module.exports = {updateSchema, authenticateSchema, registerSchema, calificacionSchema};
+module.exports = {updateSchema, authenticateSchema, registerSchema, calificacionSchema, addFriendSchema};
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
@@ -49,6 +49,15 @@ function calificacionSchema(req, res, next) {
         calificacion        : Joi.number().min(1).max(5).required(),
         comentarios         : Joi.string().required()
 
+    });
+    validateRequest(req, next, schema);
+}
+
+
+
+function addFriendSchema(req, res, next) {
+    const schema = Joi.object({
+        telefono_friend         : Joi.string().required()
     });
     validateRequest(req, next, schema);
 }

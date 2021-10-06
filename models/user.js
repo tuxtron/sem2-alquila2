@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.CalificacionUser, {foreignKey: 'user_id' ,as: 'calificaciones'});
+      User.belongsToMany(models.User, {through: 'users_friends' ,as: 'friends', foreignKey: 'user_id', otherKey: 'friend_id', timestamps: false});
     }
+
   };
   User.init({
       nombre: { type: DataTypes.STRING},

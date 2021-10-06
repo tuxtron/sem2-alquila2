@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({
 // api routes
 app.use('/users', require('./users/users.controller'));
 app.use('/publicaciones', require('./publicaciones/publicaciones.controller'));
+app.use('/categorias', require('./categorias/categorias.controller'));
 
 
 // global error handler

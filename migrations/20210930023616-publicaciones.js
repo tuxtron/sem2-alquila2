@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       es_necesidad: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
-      foto: { type: Sequelize.STRING, allowNull: false, defaultValue: 0 },
+      foto: { type: Sequelize.TEXT, allowNull: false, defaultValue: 0 },
       activa: { type: Sequelize.BOOLEAN, defaultValue: false },
       updatedAt: {
         type: 'TIMESTAMP',

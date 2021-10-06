@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
-module.exports = { createPublicacionSchema, updatePublicacionSchema };
+module.exports = { createPublicacionSchema, updatePublicacionSchema, calificacionSchema };
 
 function createPublicacionSchema(req, res, next) {
     const schema = Joi.object({
@@ -35,3 +35,16 @@ function updatePublicacionSchema(req, res, next) {
     });
     validateRequest(req, next, schema);
 }
+
+function calificacionSchema(req, res, next) {
+    const schema = Joi.object({
+        
+        calificacion        : Joi.number().min(1).max(5).required(),
+        comentarios         : Joi.string().required()
+
+    });
+    validateRequest(req, next, schema);
+}
+
+
+

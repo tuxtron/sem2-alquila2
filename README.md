@@ -126,7 +126,7 @@ Devolución:
 
 
 
-<h3>🔐 Show: GET -> /users/1</h3>
+<h3>🔐 Show: GET -> /users/{id_user}</h3>
 
 
 ```
@@ -151,13 +151,13 @@ Devolución:
 
 
 
-<h3>🔐 Calificar: POST -> /users/1</h3>
+<h3>🔐 Calificar: POST -> /users/{id_user}</h3>
 
 
 ```
 Parametros de envio:
 {
-    "calificacione" : Double,
+    "calificacion" : Double,
     "comentarios"   : String,
 }
 
@@ -171,3 +171,75 @@ Devolución:
 ```
 
 
+<h3>🔐 Agregar amigo: POST -> /users/addFriend</h3>
+
+```
+Parametros de envio:
+{
+    "telefono_friend"   : String,
+}
+
+Devolución:
+
+{
+    "error"   : Bool,
+    "message" : String,
+}
+
+```
+
+
+<h3>🔐 Eliminar amigo: POST -> /users/deleteFriend/{friend_id}</h3>
+
+```
+Devolución:
+
+{
+    "error"   : Bool,
+    "message" : String,
+}
+
+```
+
+
+
+<h3>🔐 Descaartar publicacion : POST -> /users/descartarPublicacion/{publicacion_id}</h3>
+
+```
+Devolución:
+
+{
+    "error"   : Bool,
+    "message" : String,
+}
+
+```
+
+
+
+
+
+
+<br>
+<h2> ✅  Publicaciones</h2>
+<br>
+
+
+<h3>🔐 Calificar: POST -> /publicaciones/{id_publicacion}</h3>
+
+
+```
+Parametros de envio:
+{
+    "calificacion" : Double,
+    "comentarios"   : String,
+}
+
+Devolución:
+
+{
+    "error"   : Bool,
+    "message" : String,
+}
+
+```

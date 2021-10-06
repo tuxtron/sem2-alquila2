@@ -17,6 +17,16 @@ module.exports = (sequelize, DataTypes) => {
 					foreignKey: 'user_id'
 				}
 			);
+            
+            Publicacion.belongsTo(models.Categoria,
+				{
+					as: 'categoria',
+					foreignKey: 'categoria_id'
+				}
+			);
+
+            Publicacion.hasMany(models.CalificacionPublicacion, {foreignKey: 'publicacion_id' ,as: 'calificaciones'});
+
         }
     }
     Publicacion.init(

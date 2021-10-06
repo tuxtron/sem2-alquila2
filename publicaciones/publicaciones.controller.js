@@ -9,6 +9,8 @@ router.get('/', authorize(), getAllPublicaciones);
 router.get('/:id', authorize(), getPublicacionById);
 router.post('/store', authorize(), validations.createPublicacionSchema, createPublicacion);
 router.put('/:id', authorize(), validations.updatePublicacionSchema, updatePublicaciones);
+router.post('/:id(\\d+)', authorize(), validations.calificacionSchema, calificar);
+
 // router.delete('/:id', authorize(), removePublicaciones);
 
 module.exports = router;
@@ -42,3 +44,10 @@ function updatePublicaciones(req, res, next) {
 // }
 
 
+
+
+function calificar(req, res, next) {
+    publicacionService.calificar(req.params.id, req.body)
+        .then(() => res.json({ error: false, message: 'Calificación guardada' }))
+        .catch(next);
+}

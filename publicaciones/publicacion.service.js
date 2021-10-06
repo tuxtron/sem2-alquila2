@@ -4,12 +4,14 @@ const { Op } = require("sequelize");
 
 
 var Publicacion = require('../models/index').Publicacion;
+var CalificacionPublicacion = require('../models/index').CalificacionPublicacion;
 
 module.exports = {
     getAllPublicaciones,
     getPublicacion,
     createPublicacion,
-    updatePublicacion
+    updatePublicacion,
+    calificar
 }
 
 async function getAllPublicaciones(req) {
@@ -19,6 +21,7 @@ async function getAllPublicaciones(req) {
     const { limit, offset } = getPagination(page, size);
 
     var data = await Publicacion.findAndCountAll({
+        include: ['user','categoria'],
         offset: offset,
         limit: limit,
         where: params
@@ -46,13 +49,32 @@ async function updatePublicacion(id, params) {
 }
 
 async function getPublicacion(id) {
-    const publicacion = await Publicacion.findByPk(id).then( async(publicacion) => {
+    const publicacion = await Publicacion.findByPk(id, {
+        include: ['calificaciones', 'user','categoria']
+    }).then( async(publicacion) => {
         try{
-            return publicacion;
+
+            try{
+                const sum = publicacion.calificaciones.reduce( function(a, b){
+                        return a + b.calificacion;
+                    }, 0);
+                    publicacion.setDataValue("promedio",sum/publicacion.calificaciones.length)
+                return publicacion;
+            }catch(e){
+                console.error(e);
+            }
         }catch(e){
             console.error(e);
         }
     });
+
     if (!publicacion) throw 'Publicación no encontrado';
+
     return publicacion;
+}
+
+
+async function calificar(id, params) {
+    params.publicacion_id = id
+    await CalificacionPublicacion.create(params);
 }
