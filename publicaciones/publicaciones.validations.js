@@ -11,7 +11,7 @@ function createPublicacionSchema(req, res, next) {
         precio              : Joi.number().required(),
         fecha_limite        : Joi.date().required(),
         ver_todos           : Joi.boolean().required(),
-        user_id             : Joi.number().required(),
+        //user_id             : Joi.number().required(),
         es_necesidad        : Joi.boolean().required(),
         foto                : Joi.string().required(),
         activa              : Joi.boolean().required(),

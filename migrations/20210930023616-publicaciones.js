@@ -22,7 +22,7 @@ module.exports = {
         }
       },
       es_necesidad: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
-      foto: { type: Sequelize.TEXT, allowNull: false, defaultValue: 0 },
+      foto: { type: Sequelize.TEXT, allowNull: false, defaultValue: "" },
       activa: { type: Sequelize.BOOLEAN, defaultValue: false },
       updatedAt: {
         type: 'TIMESTAMP',
@@ -48,3 +48,5 @@ module.exports = {
     await queryInterface.dropTable('publicaciones');
   }
 };
+
+

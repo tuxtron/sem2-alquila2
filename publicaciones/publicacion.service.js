@@ -30,7 +30,8 @@ async function getAllPublicaciones(req) {
     return getPagingData(data, page, limit);
 }
 
-async function createPublicacion(params) {
+async function createPublicacion(params, user_id) {
+    params.user_id = user_id
     const publicacion = await Publicacion.create(params).then( async(publicacion) => {
         try{
             return { publicacion }

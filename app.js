@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({
 app.use('/users', require('./users/users.controller'));
 app.use('/publicaciones', require('./publicaciones/publicaciones.controller'));
 app.use('/categorias', require('./categorias/categorias.controller'));
+app.use('/ofertas', require('./ofertas/ofertas.controller'));
 
 
 // global error handler

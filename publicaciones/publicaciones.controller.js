@@ -28,7 +28,10 @@ function getPublicacionById(req, res, next) {
 }
 
 function createPublicacion(req, res, next) {
-    publicacionService.createPublicacion(req.body)
+
+
+
+    publicacionService.createPublicacion(req.body, req.user.id)
         .then(publicacion => res.json(publicacion))
         .catch(next);
 }
