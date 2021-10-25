@@ -4,18 +4,36 @@ const { Op } = require("sequelize");
 
 
 var Publicacion = require('../models/index').Publicacion;
+var Oferta = require('../models/index').Oferta;
 var CalificacionPublicacion = require('../models/index').CalificacionPublicacion;
+const userService = require('../users/user.service');
+
 
 module.exports = {
     getAllPublicaciones,
     getPublicacion,
     createPublicacion,
     updatePublicacion,
-    calificar
+    calificar,
+    reactivar
 }
 
 async function getAllPublicaciones(req) {
-    var params = {}
+    
+    
+    const amigos = await userService.getFriends(req.user.id);
+    let ids_amigos = amigos.map(a => a.id);
+    
+    var params = {
+        activa: true,
+        [Op.or]:{
+            ver_todos: true,
+            user_id: {
+                [Op.in]: ids_amigos,
+            }
+            
+        }
+    }
 
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
@@ -78,4 +96,14 @@ async function getPublicacion(id) {
 async function calificar(id, params) {
     params.publicacion_id = id
     await CalificacionPublicacion.create(params);
+}
+
+async function reactivar(id, params) {
+    const publicacion = await getPublicacion(id);
+    Object.assign(publicacion, {activa:true});
+    await publicacion.save();
+
+    await Oferta.update({ es_vieja : true },{ where : { publicacion_id : id }});
+
+    return publicacion;
 }

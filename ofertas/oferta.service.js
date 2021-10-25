@@ -2,6 +2,8 @@ require('dotenv').config();
 const {getPagingData,getPagination} = require('_helpers/comunes.js');
 const { Op } = require("sequelize");
 
+const publicacionService = require('../publicaciones/publicacion.service');
+
 
 var Oferta = require('../models/index').Oferta;
 
@@ -15,7 +17,8 @@ module.exports = {
 
 async function getAllOfertas(req) {
     var params = {
-         publicacion_id: req.params.publicacion_id 
+         publicacion_id: req.params.publicacion_id,
+         es_vieja: false
     }
 
     const { page, size } = req.query;
@@ -50,6 +53,11 @@ async function elegirOferta(id) {
     const oferta = await getOferta(id);
     Object.assign(oferta, {elegida:true});
     await oferta.save();
+
+    const publicacion = await publicacionService.getPublicacion(oferta.publicacion_id);
+    Object.assign(publicacion, {activa:false});
+    await publicacion.save();
+
     return oferta;
 }
 

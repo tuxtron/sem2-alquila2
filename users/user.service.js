@@ -23,7 +23,8 @@ module.exports = {
     addFriend,
     deleteFriend,
     descartarPublicacion,
-    delete: _delete
+    delete: _delete,
+    getFriends
 };
 
 async function authenticate({ email, password }) {
@@ -168,7 +169,10 @@ async function deleteFriend(user_id, friend_id) {
    
 }
 
-
+async function getFriends(user_id){
+    const user =await getUser(user_id);
+    return user.friends;
+}
 
 async function _delete(id) {
     const user = await getUser(id);
