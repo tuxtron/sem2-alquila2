@@ -7,7 +7,12 @@ module.exports = {
       "host"    : process.env.PG_HOST,
       "port"    : process.env.PG_PORT,
       "dialect" : "postgres",
-      "ssl"     : true,
+      "dialectOptions": {
+        "ssl": {
+          "require": true, // This will help you. But you will see nwe error
+          "rejectUnauthorized": false // This line will fix new error
+        }
+      },
   },
   "production": {
       "username": process.env.PG_USER,
@@ -16,6 +21,11 @@ module.exports = {
       "host"    : process.env.PG_HOST,
       "port"    : process.env.PG_PORT,
       "dialect" : "postgres",
-      "ssl"     : true,
+      "dialectOptions": {
+        "ssl": {
+          "require": true, // This will help you. But you will see nwe error
+          "rejectUnauthorized": false // This line will fix new error
+        }
+      },
   },
 };
