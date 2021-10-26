@@ -8,6 +8,7 @@ const validations = require('./ofertas.validations');
 router.get('/getOfertaPublicacion/:publicacion_id(\\d+)', authorize(), getAllOfertas);
 router.get('/:id(\\d+)', authorize(), getOfertaById);
 router.post('/elegir_oferta/:id(\\d+)', authorize(), elegirOferta);
+router.post('/rechazar_oferta/:id(\\d+)', authorize(), rechazarOferta);
 router.post('/store/:publicacion_id(\\d+)', authorize(), validations.createOfertaSchema, createOferta);
 
 
@@ -34,5 +35,11 @@ function createOferta(req, res, next) {
 function elegirOferta(req, res, next) {
     ofertaService.elegirOferta(req.params.id)
     .then(_ => res.json("Oferta elegida"))
+    .catch(next);
+}
+
+function rechazarOferta(req, res, next) {
+    ofertaService.rechazarOferta(req.params.id)
+    .then(_ => res.json("Oferta rechazada"))
     .catch(next);
 }

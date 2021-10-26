@@ -15,7 +15,8 @@ module.exports = {
     createPublicacion,
     updatePublicacion,
     calificar,
-    reactivar
+    reactivar,
+    getMisPublicaciones
 }
 
 async function getAllPublicaciones(req) {
@@ -24,6 +25,7 @@ async function getAllPublicaciones(req) {
     const amigos = await userService.getFriends(req.user.id);
     let ids_amigos = amigos.map(a => a.id);
     
+    console.log(req.query.es_necesidad)
     var params = {
         activa: true,
         [Op.or]:{
@@ -32,7 +34,8 @@ async function getAllPublicaciones(req) {
                 [Op.in]: ids_amigos,
             }
             
-        }
+        },
+        es_necesidad: req.query.es_necesidad === "true" ? true : false
     }
 
     const { page, size } = req.query;
@@ -47,6 +50,31 @@ async function getAllPublicaciones(req) {
 
     return getPagingData(data, page, limit);
 }
+
+
+
+async function getMisPublicaciones(req) {
+    
+    var params = {
+        activa: req.query.activa === "true" ? true : false,
+        user_id: req.user.id,
+        es_necesidad: req.query.es_necesidad === "true" ? true : false
+    }
+
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
+
+    var data = await Publicacion.findAndCountAll({
+        include: ['user','categoria'],
+        offset: offset,
+        limit: limit,
+        where: params
+      });
+
+    return getPagingData(data, page, limit);
+}
+
+
 
 async function createPublicacion(params, user_id) {
     params.user_id = user_id

@@ -6,6 +6,7 @@ const validations = require('./publicaciones.validations');
 
 //routes
 router.get('/', authorize(), getAllPublicaciones);
+router.get('/mis_publicaciones', authorize(), getMisPublicaciones);
 router.get('/:id', authorize(), getPublicacionById);
 router.post('/store', authorize(), validations.createPublicacionSchema, createPublicacion);
 router.put('/:id', authorize(), validations.updatePublicacionSchema, updatePublicaciones);
@@ -21,6 +22,14 @@ function getAllPublicaciones(req, res, next) {
         .then(publicacion => res.json(publicacion))
         .catch(next);
 }
+
+function getMisPublicaciones(req, res, next) {
+    publicacionService.getMisPublicaciones(req)
+        .then(publicacion => res.json(publicacion))
+        .catch(next);
+}
+
+
 
 function getPublicacionById(req, res, next) {
     publicacionService.getPublicacion(req.params.id)

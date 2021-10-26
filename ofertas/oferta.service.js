@@ -12,7 +12,8 @@ module.exports = {
     getAllOfertas,
     getOferta,
     createOferta,
-    elegirOferta
+    elegirOferta,
+    rechazarOferta
 }
 
 async function getAllOfertas(req) {
@@ -60,6 +61,20 @@ async function elegirOferta(id) {
 
     return oferta;
 }
+
+
+
+async function rechazarOferta(id) {
+
+    const oferta = await getOferta(id);
+    Object.assign(oferta, {es_vieja:true});
+    await oferta.save();
+
+
+    return oferta;
+}
+
+
 
 async function getOferta(id) {
     const oferta = await Oferta.findByPk(id, {
