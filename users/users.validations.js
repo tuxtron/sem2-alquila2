@@ -7,7 +7,7 @@ function updateSchema(req, res, next) {
         nombre              : Joi.string().required(),
         apellido            : Joi.string().required(),
         email               : Joi.string().required(),
-        password            : Joi.string().min(6).required(),
+        //password            : Joi.string().min(6).required(),
         fecha_nacimiento    : Joi.date().required(),
         telefono            : Joi.string().required(),
         latitud             : Joi.number(),

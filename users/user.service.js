@@ -33,7 +33,7 @@ async function authenticate({ email, password }) {
     if (!user || !(await bcrypt.compare(password, user.hash)))
         throw 'Usuario o contraseña incorrecta';
 
-    const token = jwt.sign({ sub: user.id }, secret, { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, secret, { expiresIn: '365d' });
     return { ...omitHash(user.get()), token };
 }
 
@@ -75,7 +75,7 @@ async function create(params) {
 
     const user = await User.create(params).then( async(user) => {
         try{
-            const token = jwt.sign({ sub: user.id }, secret, { expiresIn: '7d' });
+            const token = jwt.sign({ sub: user.id }, secret, { expiresIn: '365d' });
             return { ...omitHash(user.get()), token };
         }catch(e){
             console.error(e);
@@ -95,9 +95,9 @@ async function update(id, params) {
         throw 'Email "' + params.email + '" se encuentra en uso.';
     }
 
-    if (params.password) {
+    /*if (params.password) {
         params.hash = await bcrypt.hash(params.password, 10);
-    }
+    }*/
 
     Object.assign(user, params);
     await user.save();
@@ -139,7 +139,7 @@ async function addFriend(user_id, params) {
         if(!relacion){
             await UserFriend.create({user_id: user_id, friend_id:  user.id})
             await UserFriend.create({user_id: user.id, friend_id:  user_id})
-            return "Amigo relacionado correctamente"
+            return user
         }else{
             return "Ya eres amigo de ese usuario"
         }

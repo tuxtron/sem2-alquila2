@@ -6,6 +6,9 @@ const { Op } = require("sequelize");
 var Publicacion = require('../models/index').Publicacion;
 var Oferta = require('../models/index').Oferta;
 var CalificacionPublicacion = require('../models/index').CalificacionPublicacion;
+var PublicacionDescartada = require('../models/index').PublicacionDescartada;
+
+
 const userService = require('../users/user.service');
 
 
@@ -22,12 +25,28 @@ module.exports = {
 async function getAllPublicaciones(req) {
     
     
+    var publicaciones_descartadas =  await PublicacionDescartada.findAll(
+        {where : 
+            {user_id: req.user.id} 
+        })
+        .then(data => {
+            return data.map(a => a.publicacion_id);
+        })
+        .catch(() => {
+            return []
+        });
+
+
+    
+
+
     const amigos = await userService.getFriends(req.user.id);
     let ids_amigos = amigos.map(a => a.id);
     
-    console.log(req.query.es_necesidad)
     var params = {
         activa: true,
+        id: {[Op.notIn]:publicaciones_descartadas},
+        user_id:  {[Op.not]:req.user.id},
         [Op.or]:{
             ver_todos: true,
             user_id: {
