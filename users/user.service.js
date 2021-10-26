@@ -7,7 +7,9 @@ const { Op } = require("sequelize");
 const secret = process.env.SECRETKEY
 
 var User = require('../models/index').User;
+var UserFriend = require('../models/index').UserFriend;
 var CalificacionUser = require('../models/index').CalificacionUser;
+var PublicacionDescartada = require('../models/index').PublicacionDescartada;
 
 
 
@@ -18,7 +20,11 @@ module.exports = {
     create,
     update,
     calificar,
-    delete: _delete
+    addFriend,
+    deleteFriend,
+    descartarPublicacion,
+    delete: _delete,
+    getFriends
 };
 
 async function authenticate({ email, password }) {
@@ -105,6 +111,69 @@ async function calificar(id, params) {
     await CalificacionUser.create(params);
 }
 
+async function descartarPublicacion(user_id, publicacion_id) {
+    return await PublicacionDescartada.create({user_id: user_id, publicacion_id:  publicacion_id}).then(data => {
+        return "Publicación descartada"
+    })
+    .catch(() => {
+        return "Error al descartar la publicacion"
+    });
+}
+
+
+async function addFriend(user_id, params) {
+
+    const user = await User.findOne({ where: { telefono: params.telefono_friend } }, {
+        include: []
+    }).then( async(user) => {
+        return user;
+    });
+    if (!user) throw 'User no encontrado';
+
+    if(user_id == user.id) throw 'No puedes vincularte a ti mismo.';
+
+    const respuesta = await UserFriend.findOne({ where:{user_id: user_id, friend_id:  user.id} }, {
+        include: []
+    }).then( async(relacion) => {
+        console.log(relacion)
+        if(!relacion){
+            await UserFriend.create({user_id: user_id, friend_id:  user.id})
+            await UserFriend.create({user_id: user.id, friend_id:  user_id})
+            return "Amigo relacionado correctamente"
+        }else{
+            return "Ya eres amigo de ese usuario"
+        }
+
+    });
+
+    console.log(respuesta)
+    return respuesta;
+   
+}
+
+async function deleteFriend(user_id, friend_id) {
+    await UserFriend.destroy({
+        where: {
+            [Op.or]: [{
+                    user_id: user_id, 
+                    friend_id:  friend_id
+                },
+                {
+                    user_id: friend_id, 
+                    friend_id:  user_id
+                }
+            ]
+        }
+     });
+    return "Amigo eliminado correctamente";
+   
+}
+
+async function getFriends(user_id){
+    const user =await getUser(user_id);
+    return user.friends;
+}
+
 async function _delete(id) {
     const user = await getUser(id);
     await user.destroy();
@@ -114,7 +183,7 @@ async function _delete(id) {
 
 async function getUser(id) {
     const user = await User.findByPk(id, {
-        include: ['calificaciones']
+        include: ['calificaciones', 'friends']
     }).then( async(user) => {
         try{
             const sum = user.calificaciones.reduce( function(a, b){
@@ -127,7 +196,6 @@ async function getUser(id) {
         }
     });
     if (!user) throw 'User no encontrado';
-    delete user.calificaciones
     return user;
 }
 

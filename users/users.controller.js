@@ -9,10 +9,13 @@ router.post('/authenticate', validations.authenticateSchema, authenticate);
 router.post('/register', validations.registerSchema, register);
 router.get('/', authorize(), getAll);
 router.get('/current', authorize(), getCurrent);
-router.get('/:id', authorize(), getById);
-router.put('/:id', authorize(), validations.updateSchema, update);
-router.post('/:id', authorize(), validations.calificacionSchema, calificar);
-//router.delete('/:id', authorize(), _delete);
+router.get('/:id(\\d+)', authorize(), getById);
+router.put('/:id(\\d+)', authorize(), validations.updateSchema, update);
+router.post('/:id(\\d+)', authorize(), validations.calificacionSchema, calificar);
+router.post('/addFriend', authorize(), validations.addFriendSchema, addFriend);
+router.post('/deleteFriend/:friend_id(\\d+)', authorize(), deleteFriend);
+router.post('/descartarPublicacion/:publicacion_id(\\d+)', authorize(), descartarPublicacion);
+//router.delete('/:id(\\d+)', authorize(), _delete);
 
 module.exports = router;
 
@@ -54,6 +57,25 @@ function update(req, res, next) {
 function calificar(req, res, next) {
     userService.calificar(req.params.id, req.body)
         .then(() => res.json({ error: false, message: 'Calificación guardada' }))
+        .catch(next);
+}
+
+
+function addFriend(req, res, next) {
+    userService.addFriend(req.user.id, req.body)
+        .then((respuesta) => res.json({ error: false, message: respuesta }))
+        .catch(next);
+}
+
+function deleteFriend(req, res, next) {
+    userService.deleteFriend(req.user.id,req.params.friend_id)
+        .then((respuesta) => res.json({error: false, message: respuesta }))
+        .catch(next);
+}
+
+function descartarPublicacion(req, res, next) {
+    userService.descartarPublicacion(req.user.id,req.params.publicacion_id)
+        .then((respuesta) => res.json({error: false, message: respuesta }))
         .catch(next);
 }
 
