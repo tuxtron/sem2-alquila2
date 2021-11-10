@@ -95,9 +95,9 @@ async function update(id, params) {
         throw 'Email "' + params.email + '" se encuentra en uso.';
     }
 
-    /*if (params.password) {
+    if (params.password) {
         params.hash = await bcrypt.hash(params.password, 10);
-    }*/
+    }
 
     Object.assign(user, params);
     await user.save();

@@ -57,14 +57,37 @@ async function getAllPublicaciones(req) {
         es_necesidad: req.query.es_necesidad === "true" ? true : false
     }
 
+
+    if(req.query.descripcion != null)
+        params.descripcion = {[Op.iLike]: '%'+req.query.descripcion+'%'}
+
+
+    //console.log(params)
+
+    
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
+
+
+    var order_by = 'id'
+    var order_as = 'ASC'
+
+    if(req.query.order_by != null)
+        order_by = req.query.order_by
+    
+    if(req.query.order_as != null)
+        order_as = req.query.order_as
+
+        
 
     var data = await Publicacion.findAndCountAll({
         include: ['user','categoria'],
         offset: offset,
         limit: limit,
-        where: params
+        where: params,
+        order: [
+                [order_by, order_as],
+        ],
       });
 
     return getPagingData(data, page, limit);
@@ -80,6 +103,9 @@ async function getMisPublicaciones(req) {
         es_necesidad: req.query.es_necesidad === "true" ? true : false
     }
 
+    if(req.query.descripcion != null)
+        params.descripcion = {[Op.iLike]: '%'+req.query.descripcion+'%'}
+        
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
 

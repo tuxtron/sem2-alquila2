@@ -13,7 +13,8 @@ module.exports = {
     getOferta,
     createOferta,
     elegirOferta,
-    rechazarOferta
+    rechazarOferta,
+    getMisOfertas
 }
 
 async function getAllOfertas(req) {
@@ -25,15 +26,60 @@ async function getAllOfertas(req) {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
 
+    var order_by = 'id'
+    var order_as = 'ASC'
+
+    if(req.query.order_by != null)
+        order_by = req.query.order_by
+    
+    if(req.query.order_as != null)
+        order_as = req.query.order_as
+
     var data = await Oferta.findAndCountAll({
         include: ['user'],
         offset: offset,
         limit: limit,
-        where: params
+        where: params,
+        order: [
+                [order_by, order_as],
+        ],
       });
 
     return getPagingData(data, page, limit);
 }
+
+async function getMisOfertas(req) {
+    var params = { 
+        user_id: req.user.id
+    }
+
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
+
+
+    var order_by = 'id'
+    var order_as = 'ASC'
+
+    if(req.query.order_by != null)
+        order_by = req.query.order_by
+    
+    if(req.query.order_as != null)
+        order_as = req.query.order_as
+
+        
+    var data = await Oferta.findAndCountAll({
+        include: [],
+        offset: offset,
+        limit: limit,
+        where: params,
+        order: [
+                [order_by, order_as],
+        ],
+      });
+
+    return getPagingData(data, page, limit);
+}
+
 
 async function createOferta(params, publicacion_id, user_id) {
     params.user_id = user_id

@@ -6,6 +6,7 @@ const validations = require('./ofertas.validations');
 
 //routes
 router.get('/getOfertaPublicacion/:publicacion_id(\\d+)', authorize(), getAllOfertas);
+router.get('/mis_ofertas', authorize(), getMisOfertas);
 router.get('/:id(\\d+)', authorize(), getOfertaById);
 router.post('/elegir_oferta/:id(\\d+)', authorize(), elegirOferta);
 router.post('/rechazar_oferta/:id(\\d+)', authorize(), rechazarOferta);
@@ -17,6 +18,12 @@ module.exports = router;
 function getAllOfertas(req, res, next) {
     ofertaService.getAllOfertas(req)
         .then(oferta => res.json(oferta))
+        .catch(next);
+}
+
+function getMisOfertas(req, res, next) {
+    ofertaService.getMisOfertas(req)
+        .then(ofertas => res.json(ofertas))
         .catch(next);
 }
 
