@@ -12,7 +12,7 @@ function getPagingData(data, page, limit){
 
     const totalItems = data.count
     const currentPage = page ? +page : 0;
-    const totalPages = totalItems / limit;
+    const totalPages = Math.ceil(totalItems / limit) ;
   
     return { totalItems, registros, totalPages, currentPage };
 }
