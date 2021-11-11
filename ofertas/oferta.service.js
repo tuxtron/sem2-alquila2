@@ -68,7 +68,7 @@ async function getMisOfertas(req) {
 
         
     var data = await Oferta.findAndCountAll({
-        include: [],
+        include: ['publicacion'],
         offset: offset,
         limit: limit,
         where: params,
