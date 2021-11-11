@@ -10,9 +10,9 @@ function getPagination(page, size){
 function getPagingData(data, page, limit){
     const { rows: registros } = data;
 
-    const totalItems = registros.length
+    const totalItems = data.count
     const currentPage = page ? +page : 0;
-    const totalPages = Math.ceil(totalItems / limit) + 1;
+    const totalPages = totalItems / limit;
   
     return { totalItems, registros, totalPages, currentPage };
 }
