@@ -28,7 +28,7 @@ function getMisOfertas(req, res, next) {
 }
 
 function getOfertaById(req, res, next) {
-    ofertaService.getOferta(req.params.id)
+    ofertaService.getOferta(req.params.id, req.user.id)
     .then(oferta => res.json(oferta))
     .catch(next);
 }

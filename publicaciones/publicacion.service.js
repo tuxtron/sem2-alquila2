@@ -110,7 +110,7 @@ async function getMisPublicaciones(req) {
     const { limit, offset } = getPagination(page, size);
 
     var data = await Publicacion.findAndCountAll({
-        include: ['user','categoria'],
+        include: ['user','categoria','oferta_aceptada'],
         offset: offset,
         limit: limit,
         where: params
@@ -166,8 +166,10 @@ async function getPublicacion(id) {
 }
 
 
-async function calificar(id, params) {
-    params.publicacion_id = id
+async function calificar(id, params,comentarista_id) {
+    params.publicacion_id = parseInt(id)
+    params.comentarista_id = comentarista_id
+
     await CalificacionPublicacion.create(params);
 }
 

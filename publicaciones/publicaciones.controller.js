@@ -58,7 +58,7 @@ function updatePublicaciones(req, res, next) {
 
 
 function calificar(req, res, next) {
-    publicacionService.calificar(req.params.id, req.body)
+    publicacionService.calificar(req.params.id, req.body, req.user.id)
         .then(() => res.json({ error: false, message: 'Calificación guardada' }))
         .catch(next);
 }

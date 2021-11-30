@@ -55,7 +55,7 @@ function update(req, res, next) {
 }
 
 function calificar(req, res, next) {
-    userService.calificar(req.params.id, req.body)
+    userService.calificar(req.params.id, req.body, req.user.id)
         .then(() => res.json({ error: false, message: 'Calificación guardada' }))
         .catch(next);
 }

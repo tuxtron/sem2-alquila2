@@ -27,6 +27,8 @@ module.exports = (sequelize, DataTypes) => {
 
             Publicacion.hasMany(models.CalificacionPublicacion, {foreignKey: 'publicacion_id' ,as: 'calificaciones'});
 
+            Publicacion.hasOne(models.Oferta, {foreignKey: 'publicacion_id' ,as: 'oferta_aceptada', scope:{elegida:true}});
+
         }
     }
     Publicacion.init(

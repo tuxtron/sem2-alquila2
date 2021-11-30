@@ -106,8 +106,9 @@ async function update(id, params) {
 }
 
 
-async function calificar(id, params) {
+async function calificar(id, params, comentarista_id) {
     params.user_id = id
+    params.comentarista_id = comentarista_id
     await CalificacionUser.create(params);
 }
 

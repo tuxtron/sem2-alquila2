@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   CalificacionPublicacion.init({
     comentarios: DataTypes.STRING,
     publicacion_id: DataTypes.INTEGER,
+    oferta_id: DataTypes.INTEGER,
+    comentarista_id: DataTypes.INTEGER,
     calificacion: DataTypes.INTEGER,
   }, {
     sequelize,

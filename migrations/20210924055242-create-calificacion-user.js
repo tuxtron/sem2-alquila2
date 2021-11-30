@@ -12,6 +12,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      oferta_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      comentarista_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       comentarios: {
         type: Sequelize.STRING,
         allowNull: false,

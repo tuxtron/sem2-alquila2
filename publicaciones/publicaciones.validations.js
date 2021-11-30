@@ -40,7 +40,8 @@ function calificacionSchema(req, res, next) {
     const schema = Joi.object({
         
         calificacion        : Joi.number().min(1).max(5).required(),
-        comentarios         : Joi.string().required()
+        comentarios         : Joi.string().required(),
+        oferta_id           : Joi.number().required()
 
     });
     validateRequest(req, next, schema);

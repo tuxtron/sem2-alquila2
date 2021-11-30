@@ -6,6 +6,8 @@ const publicacionService = require('../publicaciones/publicacion.service');
 
 
 var Oferta = require('../models/index').Oferta;
+var CalificacionPublicacion = require('../models/index').CalificacionPublicacion;
+var CalificacionUser = require('../models/index').CalificacionUser;
 
 
 module.exports = {
@@ -122,8 +124,8 @@ async function rechazarOferta(id) {
 
 
 
-async function getOferta(id) {
-    const oferta = await Oferta.findByPk(id, {
+async function getOferta(id, user_id = null) {
+    var oferta = await Oferta.findByPk(id, {
         include: ['user','publicacion']
     }).then( async(oferta) => {
         return oferta
@@ -131,6 +133,30 @@ async function getOferta(id) {
 
     if (!oferta) throw 'Oferta no encontrado';
 
+    oferta = oferta.toJSON();
+    if(user_id != null){
+        const respuesta = await CalificacionPublicacion.findOne({ where:{comentarista_id: user_id, oferta_id:  id} }).then( async(relacion) => {
+            if(!relacion){
+                return false;
+            }else{
+                return true;
+            }
+        });
+        
+        const respuesta2 = await CalificacionUser.findOne({ where:{comentarista_id: user_id, oferta_id:  id} }).then( async(relacion) => {
+            if(!relacion){
+                return false;
+            }else{
+                return true;
+            }
+        });
+        oferta.producto_calificado = respuesta
+        oferta.user_calificado = respuesta2
+    }else{
+        oferta.producto_calificado = false;
+        oferta.user_calificado = false;
+    }
+    
     return oferta;
 }
 
