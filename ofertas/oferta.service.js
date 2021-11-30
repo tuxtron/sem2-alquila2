@@ -99,7 +99,13 @@ async function createOferta(params, publicacion_id, user_id) {
 
 async function elegirOferta(id) {
 
-    const oferta = await getOferta(id);
+    var oferta = await Oferta.findByPk(id, {
+        include: []
+    }).then( async(oferta) => {
+        return oferta
+    });
+
+
     Object.assign(oferta, {elegida:true});
     await oferta.save();
 
@@ -114,7 +120,12 @@ async function elegirOferta(id) {
 
 async function rechazarOferta(id) {
 
-    const oferta = await getOferta(id);
+    var oferta = await Oferta.findByPk(id, {
+        include: []
+    }).then( async(oferta) => {
+        return oferta
+    });
+
     Object.assign(oferta, {es_vieja:true});
     await oferta.save();
 
