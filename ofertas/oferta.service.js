@@ -29,7 +29,7 @@ async function getAllOfertas(req) {
     const { limit, offset } = getPagination(page, size);
 
     var order_by = 'id'
-    var order_as = 'ASC'
+    var order_as = 'DESC'
 
     if(req.query.order_by != null)
         order_by = req.query.order_by
@@ -60,7 +60,7 @@ async function getMisOfertas(req) {
 
 
     var order_by = 'id'
-    var order_as = 'ASC'
+    var order_as = 'DESC'
 
     if(req.query.order_by != null)
         order_by = req.query.order_by
